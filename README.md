@@ -75,7 +75,7 @@ Example:
 ```json
 {
     "require": {
-       "phpoffice/phpword": "v0.13.*"
+       "xuys/phpword": "v0.13.*"
     }
 }
 ```
