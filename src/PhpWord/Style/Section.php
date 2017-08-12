@@ -35,15 +35,16 @@ class Section extends Border
      *
      * @const int|float
      */
-    const DEFAULT_WIDTH = 11870;        // In twips.
-    const DEFAULT_HEIGHT = 16787;       // In twips.
-    const DEFAULT_MARGIN = 1440;        // In twips.
-    const DEFAULT_GUTTER = 0;           // In twips.
-    const DEFAULT_HEADER_HEIGHT = 720;  // In twips.
-    const DEFAULT_FOOTER_HEIGHT = 720;  // In twips.
+    const DEFAULT_WIDTH = 11905.511811024; // In twips.
+    const DEFAULT_HEIGHT = 16837.79527559; // In twips.
+    const DEFAULT_MARGIN = 1440;           // In twips.
+    const DEFAULT_GUTTER = 0;              // In twips.
+    const DEFAULT_HEADER_HEIGHT = 720;     // In twips.
+    const DEFAULT_FOOTER_HEIGHT = 720;     // In twips.
     const DEFAULT_COLUMN_COUNT = 1;
-    const DEFAULT_COLUMN_SPACING = 720; // In twips.
+    const DEFAULT_COLUMN_SPACING = 720;    // In twips.
 
+    const DEFAULT_TEXTDIRECTION = 'lrTb';      // writing direction
     /**
      * Page Orientation
      *
@@ -165,6 +166,19 @@ class Section extends Border
      * @link http://www.schemacentral.com/sc/ooxml/e-w_lnNumType-1.html
      */
     private $lineNumbering;
+
+    /**
+     * Text Direction
+     * Options:
+     * - lrTb : Left to Right, Top to Bottom
+     * - tbRl : Top to Bottom, Right to Left
+     * - btLr : Bottom to Top, Left to Right
+     * - lrTbV : Left to Right, Top to Bottom Rotated
+     * - tbRlV : Top to Bottom, Right to Left Rotated
+     * - tbLrV : Top to Bottom, Left to Right Rotated
+     * @link http://www.datypic.com/sc/ooxml/t-w_ST_TextDirection.html
+     */
+    private $textDirection = self::DEFAULT_TEXTDIRECTION;
 
     /**
      * Create new instance
@@ -594,6 +608,26 @@ class Section extends Border
     public function setLineNumbering($value = null)
     {
         $this->setObjectVal($value, 'LineNumbering', $this->lineNumbering);
+
+        return $this;
+    }
+
+    /**
+     * Get text direction
+     * @return mixed
+     */
+    public function getTextDirection()
+    {
+        return $this->textDirection;
+    }
+    /**
+     * Set text direction
+     * @param null $value
+     * @return $this
+     */
+    public function setTextDirection($value = null)
+    {
+        $this->setObjectVal($value, 'TextDirection', $this->textDirection);
 
         return $this;
     }
