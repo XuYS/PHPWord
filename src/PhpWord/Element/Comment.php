@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -19,6 +19,7 @@ namespace PhpOffice\PhpWord\Element;
 
 /**
  * Comment element
+ * @see http://datypic.com/sc/ooxml/t-w_CT_Comment.html
  */
 class Comment extends TrackChange
 {
@@ -31,14 +32,14 @@ class Comment extends TrackChange
 
     /**
      * The Element where this comment starts
-     * 
+     *
      * @var AbstractElement
      */
     private $startElement;
 
     /**
      * The Element where this comment ends
-     * 
+     *
      * @var AbstractElement
      */
     private $endElement;
@@ -54,14 +55,13 @@ class Comment extends TrackChange
      * Create a new Comment Element
      *
      * @param string $author
-     * @param \DateTime $date
+     * @param null|\DateTime $date
      * @param string $initials
      */
-    public function __construct($author, $date, $initials)
+    public function __construct($author, $date = null, $initials = null)
     {
-        parent::__construct($author, $date);
+        parent::__construct(null, $author, $date);
         $this->initials = $initials;
-        return $this;
     }
 
     /**
@@ -76,7 +76,7 @@ class Comment extends TrackChange
 
     /**
      * Sets the element where this comment starts
-     * 
+     *
      * @param \PhpOffice\PhpWord\Element\AbstractElement $value
      */
     public function setStartElement(AbstractElement $value)
@@ -89,7 +89,7 @@ class Comment extends TrackChange
 
     /**
      * Get the element where this comment starts
-     * 
+     *
      * @return \PhpOffice\PhpWord\Element\AbstractElement
      */
     public function getStartElement()
@@ -99,7 +99,7 @@ class Comment extends TrackChange
 
     /**
      * Sets the element where this comment ends
-     * 
+     *
      * @param \PhpOffice\PhpWord\Element\AbstractElement $value
      */
     public function setEndElement(AbstractElement $value)
@@ -112,7 +112,7 @@ class Comment extends TrackChange
 
     /**
      * Get the element where this comment ends
-     * 
+     *
      * @return \PhpOffice\PhpWord\Element\AbstractElement
      */
     public function getEndElement()

@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -25,7 +25,7 @@ use PhpOffice\PhpWord\SimpleType\Zoom;
  *
  * @runTestsInSeparateProcesses
  */
-class SettingsTest extends \PHPUnit_Framework_TestCase
+class SettingsTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * EvenAndOddHeaders
@@ -34,7 +34,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
     {
         $oSettings = new Settings();
         $oSettings->setEvenAndOddHeaders(true);
-        $this->assertEquals(true, $oSettings->hasEvenAndOddHeaders());
+        $this->assertTrue($oSettings->hasEvenAndOddHeaders());
     }
 
     /**
@@ -44,7 +44,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
     {
         $oSettings = new Settings();
         $oSettings->setHideGrammaticalErrors(true);
-        $this->assertEquals(true, $oSettings->hasHideGrammaticalErrors());
+        $this->assertTrue($oSettings->hasHideGrammaticalErrors());
     }
 
     /**
@@ -54,7 +54,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
     {
         $oSettings = new Settings();
         $oSettings->setHideSpellingErrors(true);
-        $this->assertEquals(true, $oSettings->hasHideSpellingErrors());
+        $this->assertTrue($oSettings->hasHideSpellingErrors());
     }
 
     /**
@@ -63,11 +63,20 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
     public function testDocumentProtection()
     {
         $oSettings = new Settings();
-        $oSettings->setDocumentProtection(new Protection());
+        $oSettings->setDocumentProtection(new Protection('trackedChanges'));
         $this->assertNotNull($oSettings->getDocumentProtection());
 
-        $oSettings->getDocumentProtection()->setEditing('trackedChanges');
         $this->assertEquals('trackedChanges', $oSettings->getDocumentProtection()->getEditing());
+    }
+
+    /**
+     * Test setting an invalid salt
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInvalidSalt()
+    {
+        $protection = new Protection();
+        $protection->setSalt('123');
     }
 
     /**
@@ -77,7 +86,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
     {
         $oSettings = new Settings();
         $oSettings->setTrackRevisions(true);
-        $this->assertEquals(true, $oSettings->hasTrackRevisions());
+        $this->assertTrue($oSettings->hasTrackRevisions());
     }
 
     /**
@@ -87,7 +96,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
     {
         $oSettings = new Settings();
         $oSettings->setDoNotTrackFormatting(true);
-        $this->assertEquals(true, $oSettings->hasDoNotTrackFormatting());
+        $this->assertTrue($oSettings->hasDoNotTrackFormatting());
     }
 
     /**
@@ -97,7 +106,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
     {
         $oSettings = new Settings();
         $oSettings->setDoNotTrackMoves(true);
-        $this->assertEquals(true, $oSettings->hasDoNotTrackMoves());
+        $this->assertTrue($oSettings->hasDoNotTrackMoves());
     }
 
     /**
@@ -114,6 +123,24 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($oSettings->getProofState());
         $this->assertEquals(ProofState::CLEAN, $oSettings->getProofState()->getGrammar());
         $this->assertEquals(ProofState::DIRTY, $oSettings->getProofState()->getSpelling());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testWrongProofStateGrammar()
+    {
+        $proofState = new ProofState();
+        $proofState->setGrammar('wrong');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testWrongProofStateSpelling()
+    {
+        $proofState = new ProofState();
+        $proofState->setSpelling('wrong');
     }
 
     /**
@@ -134,5 +161,69 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
         $oSettings = new Settings();
         $oSettings->setZoom(Zoom::FULL_PAGE);
         $this->assertEquals('fullPage', $oSettings->getZoom());
+    }
+
+    /**
+     * Test Update Fields on update
+     */
+    public function testUpdateFields()
+    {
+        $oSettings = new Settings();
+        $oSettings->setUpdateFields(true);
+        $this->assertTrue($oSettings->hasUpdateFields());
+    }
+
+    public function testAutoHyphenation()
+    {
+        $oSettings = new Settings();
+        $oSettings->setAutoHyphenation(true);
+        $this->assertTrue($oSettings->hasAutoHyphenation());
+    }
+
+    public function testDefaultAutoHyphenation()
+    {
+        $oSettings = new Settings();
+        $this->assertNull($oSettings->hasAutoHyphenation());
+    }
+
+    public function testConsecutiveHyphenLimit()
+    {
+        $consecutiveHypenLimit = 2;
+        $oSettings = new Settings();
+        $oSettings->setConsecutiveHyphenLimit($consecutiveHypenLimit);
+        $this->assertSame($consecutiveHypenLimit, $oSettings->getConsecutiveHyphenLimit());
+    }
+
+    public function testDefaultConsecutiveHyphenLimit()
+    {
+        $oSettings = new Settings();
+        $this->assertNull($oSettings->getConsecutiveHyphenLimit());
+    }
+
+    public function testHyphenationZone()
+    {
+        $hyphenationZoneInTwip = 100;
+        $oSettings = new Settings();
+        $oSettings->setHyphenationZone($hyphenationZoneInTwip);
+        $this->assertSame($hyphenationZoneInTwip, $oSettings->getHyphenationZone());
+    }
+
+    public function testDefaultHyphenationZone()
+    {
+        $oSettings = new Settings();
+        $this->assertNull($oSettings->getHyphenationZone());
+    }
+
+    public function testDoNotHyphenateCaps()
+    {
+        $oSettings = new Settings();
+        $oSettings->setDoNotHyphenateCaps(true);
+        $this->assertTrue($oSettings->hasDoNotHyphenateCaps());
+    }
+
+    public function testDefaultDoNotHyphenateCaps()
+    {
+        $oSettings = new Settings();
+        $this->assertNull($oSettings->hasDoNotHyphenateCaps());
     }
 }

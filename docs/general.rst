@@ -159,6 +159,14 @@ Or to predefined values ``fullPage``, ``bestFit``, ``textFit``
 
     $phpWord->getSettings()->setZoom(Zoom::BEST_FIT);
 
+Mirroring the Page Margins
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Use mirror margins to set up facing pages for double-sided documents, such as books or magazines.
+
+.. code-block:: php
+
+    $phpWord->getSettings()->setMirrorMargins(true);
+
 Spelling and grammatical checks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -182,7 +190,7 @@ You can also specify the status of the spell and grammar checks, marking spellin
 
 Track Revisions
 ~~~~~~~~~~~~~~~
-Track changes can be activated using ``setTrackRevisions``, you can furture specify 
+Track changes can be activated using ``setTrackRevisions``, you can furture specify
 
 -  Not to use move syntax, instead moved items will be seen as deleted in one place and added in another
 -  Not track formatting revisions
@@ -200,6 +208,25 @@ The default symbol to represent a decimal figure is the ``.`` in english. In fre
 .. code-block:: php
 
     $phpWord->getSettings()->setDecimalSymbol(',');
+
+Document Language
+~~~~~~~~~~~~~~~~~
+The default language of the document can be change with the following.
+
+.. code-block:: php
+
+    $phpWord->getSettings()->setThemeFontLang(new Language(Language::FR_BE));
+
+``Language`` has 3 parameters, one for Latin languages, one for East Asian languages and one for Complex (Bi-Directional) languages.
+A couple of language codes are provided in the ``PhpOffice\PhpWord\ComplexType\Language`` class but any valid code/ID can be used.
+
+In case you are generating an RTF document the language need to be set differently.
+
+.. code-block:: php
+
+    $lang = new Language();
+    $lang->setLangId(Language::EN_GB_ID);
+    $phpWord->getSettings()->setThemeFontLang($lang);
 
 Document information
 --------------------
@@ -228,7 +255,7 @@ The base length unit in Open Office XML is twip. Twip means "TWentieth
 of an Inch Point", i.e. 1 twip = 1/1440 inch.
 
 You can use PHPWord helper functions to convert inches, centimeters, or
-points to twips.
+points to twip.
 
 .. code-block:: php
 
@@ -243,3 +270,65 @@ points to twips.
     $sectionStyle->setMarginLeft(\PhpOffice\PhpWord\Shared\Converter::inchToTwip(.5));
     // 2 cm right margin
     $sectionStyle->setMarginRight(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2));
+
+Document protection
+-------------------
+
+The document (or parts of it) can be password protected.
+
+.. code-block:: php
+
+    $documentProtection = $phpWord->getSettings()->getDocumentProtection();
+    $documentProtection->setEditing(DocProtect::READ_ONLY);
+    $documentProtection->setPassword('myPassword');
+
+Automatically Recalculate Fields on Open
+----------------------------------------
+
+To force an update of the fields present in the document, set updateFields to true
+
+.. code-block:: php
+
+    $phpWord->getSettings()->setUpdateFields(true);
+
+Hyphenation
+-----------
+Hyphenation describes the process of breaking words with hyphens. There are several options to control hyphenation.
+
+Auto hyphenation
+~~~~~~~~~~~~~~~~
+
+To automatically hyphenate text set ``autoHyphenation`` to ``true``.
+
+.. code-block:: php
+
+    $phpWord->getSettings()->setAutoHyphenation(true);
+
+Consecutive Hyphen Limit
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The maximum number of consecutive lines of text ending with a hyphen can be controlled by the ``consecutiveHyphenLimit`` option.
+There is no limit if the option is not set or the provided value is ``0``.
+
+.. code-block:: php
+
+    $phpWord->getSettings()->setConsecutiveHyphenLimit(2);
+
+Hyphenation Zone
+~~~~~~~~~~~~~~~~
+
+The hyphenation zone (in *twip*) is the allowed amount of whitespace before hyphenation is applied.
+The smaller the hyphenation zone the more words are hyphenated. Or in other words, the wider the hyphenation zone the less words are hyphenated.
+
+.. code-block:: php
+
+    $phpWord->getSettings()->setHyphenationZone(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(1));
+
+Hyphenate Caps
+~~~~~~~~~~~~~~
+
+To control whether or not words in all capital letters shall be hyphenated use the `doNotHyphenateCaps` option.
+
+.. code-block:: php
+
+    $phpWord->getSettings()->setDoNotHyphenateCaps(true);
